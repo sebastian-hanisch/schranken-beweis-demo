@@ -81,7 +81,18 @@ def test_readme_tabelle_gibt_jede_zelle_wieder():
 
 def test_mittlere_teile_l2_beweist_nie_mehr_als_l1():
     assert sum(ev.zeile(0, ni)["l2"] for ni in range(3)) == 0
-    assert "in **0 von 300** Instanzen mehr als L₁" in README
+    assert "in **0 von 300** Instanzen mehr als L₁" in README and "bei Paketen von höchstens halber Kapazität ist L₂ rechnerisch gleich L₁" in README
+
+
+def test_l2_ist_gleich_l1_wenn_alle_pakete_hoechstens_halbe_kapazitaet_haben():
+    """Der Grund für die 0 von 300: J1 und J2 sind dann leer, L2 = L1 (für beliebige Instanzen dieser Art, hier 2000 Zufallsinstanzen)."""
+    import random
+
+    rng = random.Random(4711)
+    for _ in range(2000):
+        cap = rng.randint(2, 60)
+        sizes = [rng.randint(1, cap // 2) for _ in range(rng.randint(1, 14))]
+        assert A.l2(sizes, cap) == A.l1(sizes, cap), (sizes, cap)
 
 
 def test_offene_faelle_mittlere_teile():

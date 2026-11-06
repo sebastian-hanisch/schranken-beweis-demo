@@ -7,7 +7,7 @@ Zweites Stück der Konzepte-Reihe **„Packen: Reihenfolge und Platzierungsregel
 
 ## Warum dieses Problem
 
-FFD ist bewiesen optimal, wenn seine Containerzahl gleich einer unteren Schranke ist. Liegt sie darüber, bleibt der Fall **offen**, und es gibt zwei ganz verschiedene Gründe: Entweder ist FFD in Wahrheit optimal und die Schranken sind zu schwach, oder die Schranke ist scharf und FFD braucht einen Container zu viel. Das trennt nur das exakte Optimum. Die Demo zeigt das an vier Handbeispielen mit zwölf Paketen (ein Beispiel je Ausgang) und misst es an einem Raster aus 9 Zellen zu je 100 Zufallsinstanzen.
+FFD ist bewiesen optimal, wenn seine Containerzahl gleich einer unteren Schranke ist. Liegt sie darüber, bleibt der Fall **offen**, und es gibt zwei ganz verschiedene Gründe: Entweder ist FFD in Wahrheit optimal und die Schranken sind zu schwach, oder FFD verliert tatsächlich Container, ob die Schranke dann scharf ist oder nicht. Verlässlich trennt das nur das exakte Optimum. Die Demo zeigt das an vier Handbeispielen mit zwölf Paketen (ein Beispiel je Ausgang) und misst es an einem Raster aus 9 Zellen zu je 100 Zufallsinstanzen.
 
 ## Modell
 
@@ -36,10 +36,10 @@ Alle Zahlen sind Messungen an den Instanzen dieser Demo (feste Seeds), nachgerec
 | breit | 20 | 45 | 43 | 12 | 9 | 3 | 0 |
 | breit | 30 | 24 | 63 | 13 | 2 | 2 | 9 |
 
-- **Mittlere Teile:** Die Schranke L₂ beweist in **0 von 300** Instanzen mehr als L₁. Von den entschiedenen offenen Fällen ist FFD bei n = 12 in 8 von 13 nicht optimal, bei n = 20 in 19 von 20 und bei n = 30 in 21 von 22.
-- **Große Teile:** L₂ beweist zusätzlich in 58, 63 und 65 von 100 Instanzen (n = 12, 20, 30). Von den entschiedenen offenen Fällen ist FFD in 4 von 4, 12 von 12 und 7 von 8 optimal: Hier sind die Schranken zu schwach, nicht FFD.
+- **Mittlere Teile:** Die Schranke L₂ beweist in **0 von 300** Instanzen mehr als L₁; das ist kein Zufallsbefund, denn bei Paketen von höchstens halber Kapazität ist L₂ rechnerisch gleich L₁. Von den entschiedenen offenen Fällen ist FFD bei n = 12 in 8 von 13 nicht optimal, bei n = 20 in 19 von 20 und bei n = 30 in 21 von 22.
+- **Große Teile:** L₂ beweist zusätzlich in 58, 63 und 65 von 100 Instanzen (n = 12, 20, 30). Von den entschiedenen offenen Fällen ist FFD in 4 von 4, 12 von 12 und 7 von 8 optimal: In diesen Fällen sind die Schranken zu schwach (bei n = 30 sind 10 von 18 offenen Fällen nicht entschieden).
 - **Breit gestreute Teile:** L₂ beweist zusätzlich in 48, 43 und 63 von 100 Instanzen. Von den entschiedenen offenen Fällen ist FFD in 3 von 3, 9 von 12 und 2 von 4 optimal.
-- **Nicht entschieden:** **31 von 600** Instanzen mit 20 oder 30 Paketen, davon 29 bei n = 30 (10 bei mittleren, 10 bei großen, 9 bei breiten Teilen) und 2 bei n = 20. Die Aussagen für n = 30 sind deshalb schwach; bei breiten Teilen mit n = 30 sind nur 4 von 13 offenen Fällen entschieden.
+- **Nicht entschieden:** **31 von 600** Instanzen mit 20 oder 30 Paketen (im Lauf, der die Datei erzeugt hat; auf einem langsameren Rechner bleiben mehr offen), davon 29 bei n = 30 (10 bei mittleren, 10 bei großen, 9 bei breiten Teilen) und 2 bei n = 20. Die Aussagen für n = 30 sind deshalb schwach; bei breiten Teilen mit n = 30 sind nur 4 von 13 offenen Fällen entschieden.
 - **Bewiesen heißt optimal:** Bei den Zellen mit 12 Paketen ist FFD in allen als „bewiesen“ eingeordneten Instanzen gleich dem per DP berechneten Optimum (`tests/test_claims.py`).
 
 | Handbeispiel (zwölf Pakete, Kapazität 100) | Summe | FFD | L₁ | L₂ | Optimum | Ausgang |
@@ -75,7 +75,7 @@ Im dritten Beispiel genügt die Volumenschranke 5 nicht, obwohl fünf Container 
 - **Verdikte:** alle Zweige an von Hand gesetzten Werten (`tests/test_verdicts.py`), je Preset der erwartete Ausgang und die Art.
 - **Presets und Layout:** vollständig, Werte innerhalb der Reglergrenzen, Standard-Preset gleich Standardeinstellung; Schnellstart oben in der Seitenleiste, fester Kopf, genau das passende Preset hervorgehoben (`tests/test_layout.py`).
 - **Oberfläche:** AppTest-Rauchtest (jeder Button, jede Auswahl in jedem Wert, Regler und Startzahl an den Grenzen) und Footer-Test.
-- **Tests gesamt:** 100, Laufzeit etwa eine halbe Minute (ohne Parallelisierung).
+- **Tests gesamt:** 100, Laufzeit je nach Rechner rund zwei bis drei Minuten (ohne Parallelisierung).
 
 ## Dateistruktur
 

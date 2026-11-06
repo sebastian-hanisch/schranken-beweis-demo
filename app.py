@@ -158,7 +158,7 @@ with st.expander("📐 Mathematische Formulierung"):
 | $L_1$, $L_2$ | untere Schranken für $\mathrm{OPT}$ |
 | $\alpha$ | Schwelle in der Rechnung von $L_2$ |
 
-**Entscheidungsregel.** Es gilt $L_1 \le L_2 \le \mathrm{OPT} \le \mathrm{FFD}$. Ist $\mathrm{FFD} = L_1$ oder $\mathrm{FFD} = L_2$, folgt $\mathrm{FFD} = \mathrm{OPT}$: bewiesen. Ist $\mathrm{FFD} > L_2$, sagen die Schranken nichts; dann gilt entweder $\mathrm{OPT} = \mathrm{FFD}$ (die Schranken sind zu schwach) oder $\mathrm{OPT} < \mathrm{FFD}$ (FFD verliert).
+**Entscheidungsregel.** Es gilt $L_1 \le L_2 \le \mathrm{OPT} \le \mathrm{FFD}$. Ist $\mathrm{FFD} = L_1$ oder $\mathrm{FFD} = L_2$, folgt $\mathrm{FFD} = \mathrm{OPT}$: bewiesen. Ist $\mathrm{FFD} > L_2$, entscheiden die Schranken nicht, ob FFD optimal ist; dann gilt entweder $\mathrm{OPT} = \mathrm{FFD}$ (die Schranken sind zu schwach) oder $\mathrm{OPT} < \mathrm{FFD}$ (FFD verliert).
 
 **Volumenschranke.** $L_1 = \left\lceil \tfrac{1}{C} \sum_i s_i \right\rceil$.
 
