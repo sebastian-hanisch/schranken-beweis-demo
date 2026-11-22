@@ -101,6 +101,6 @@ def sidebar_presets():
 
 
 def randomize_seed():
-    """Neue Startzahl und zugleich die zufällige Instanz wählen: Größenbereich, Paketzahl und Startzahl wirken nur dort."""
+    """Neuen Zufalls-Seed und zugleich die zufällige Instanz wählen: Größenbereich, Paketzahl und Zufalls-Seed wirken nur dort."""
     st.session_state["seed_input"] = random.randint(0, C.SEED_MAX)
     st.session_state["beispiel_select"] = C.ZUFALL

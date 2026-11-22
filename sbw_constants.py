@@ -66,7 +66,7 @@ PRESET_HELP = {
     "Bewiesen erst durch L2": "Zwölf große Pakete: Die Volumenschranke L1 sagt nur 9 Container, die Schranke L2 aber 11. Erst L2 beweist, dass FFD optimal ist.",
     "Offen, FFD optimal": "FFD braucht mehr Container als beide Schranken. Das exakte Optimum zeigt: FFD ist trotzdem optimal, die Schranken sind zu schwach.",
     "Offen, FFD nicht optimal": "FFD braucht mehr Container als beide Schranken. Das exakte Optimum zeigt: Ein Container weniger geht, FFD ist nicht optimal.",
-    "Zufällige Instanz (mittlere Teile)": "Eine zufällige Instanz mit mittleren Paketgrößen; Größenbereich, Paketzahl und Startzahl in der Seitenleiste.",
+    "Zufällige Instanz (mittlere Teile)": "Eine zufällige Instanz mit mittleren Paketgrößen; Größenbereich, Paketzahl und Zufalls-Seed in der Seitenleiste.",
 }
 
 # Text des Expanders „Annahmen, Grenzen und bekannte Probleme“; derselbe Wortlaut steht in der README (tests/test_claims.py vergleicht beide).

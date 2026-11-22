@@ -42,6 +42,17 @@ Weiter unten: der Abschnitt **🔬 Experiment**, **🚧 Wo die Annahmen enden**,
 """
 )
 
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/packen-schranke-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Gegeben sind Pakete mit ganzzahligen Größen und Container gleicher Größe. Die Packregel FFD legt die größten Pakete zuerst jeweils in den ersten Container mit genug Platz. Gesucht ist die Antwort auf die Frage, ob ein Plan mit weniger Containern möglich wäre. Zwei untere Schranken helfen dabei: Die eine teilt die Gesamtmenge durch die Containergröße und rundet auf, die schärfere zählt Pakete über der halben Containergröße einzeln. Erreicht die Packung eine Schranke, ist sie bewiesen optimal. Liegt sie darüber, bleibt der Fall offen, und das hat zwei Gründe: Entweder sind die Schranken zu schwach, oder die Regel verliert tatsächlich Container. Handbeispiele zeigen je einen Ausgang, ein Raster aus erfundenen Zufallsinstanzen misst, wie sich die Fälle verteilen.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/packen-schranke-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
+
 with st.expander("So funktioniert der Beweis über Schranken", expanded=True):
     st.markdown(
         """
@@ -67,7 +78,7 @@ with st.sidebar:
     verteilung = st.selectbox("Größen der Pakete", list(range(len(C.VERTEILUNGEN))), format_func=lambda i: C.VERTEILUNGEN[i][1], key="verteilung_select",
                               help="Wirkt nur bei der zufälligen Instanz.")
     n = st.slider("Zahl der Pakete n", *bounds("n_slider"), key="n_slider", help="Wirkt nur bei der zufälligen Instanz.")
-    seed = st.number_input("Startzahl der zufälligen Instanz", *bounds("seed_input"), key="seed_input", step=1, help="Wirkt nur bei der zufälligen Instanz.")
+    seed = st.number_input("Zufalls-Seed der zufälligen Instanz", *bounds("seed_input"), key="seed_input", step=1, help="Wirkt nur bei der zufälligen Instanz.")
     st.button("🎲 Neue zufällige Instanz würfeln", width="stretch", on_click=randomize_seed)
 
 sync_query_params({"beispiel_select": int(beispiel), "verteilung_select": int(verteilung), "n_slider": int(n), "seed_input": int(seed)})
@@ -144,6 +155,26 @@ with st.expander("⚠️ Annahmen, Grenzen und bekannte Probleme"):
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/packen-schranke-erklaert.json, nicht von Hand ändern)
+    st.markdown(
+        r"""
+**Lesehilfe.** Gegeben sind $n$ Pakete mit ganzzahligen Größen $s_i$ und Container der Kapazität $C$. Gesucht ist die kleinste Zahl von Containern, in die alle Pakete passen, und ein Beweis, dass FFD sie erreicht. Die Schranken $L_1$ und $L_2$ sind Zahlen, unter die keine Packung kommen kann.
+
+| Symbol | Bedeutung |
+|---|---|
+| $n$ | Zahl der Pakete |
+| $s_i$ | Größe von Paket $i$, $1 \le s_i \le C$ |
+| $C$ | Kapazität eines Containers |
+| $\mathrm{FFD}$ | Containerzahl von First Fit Decreasing |
+| $\mathrm{OPT}$ | kleinste mögliche Zahl von Containern |
+| $L_1$, $L_2$ | untere Schranken für $\mathrm{OPT}$: Volumenschranke und die schärfere Schranke für große Pakete |
+| $\alpha$ | Schwelle in der Rechnung von $L_2$ |
+| $J_1$, $J_2$, $J_3$ | die Pakete, die für die Schwelle $\alpha$ in die drei Gruppen der Rechnung von $L_2$ fallen |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/packen-schranke-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
     st.markdown(
         r"""
 **Lesehilfe.** *Gegeben:* Pakete mit ganzzahligen Größen und Container einer festen Kapazität. *Gesucht:* die kleinste Zahl von Containern, in die alle Pakete passen, und ein Beweis, dass FFD sie erreicht.
@@ -166,7 +197,7 @@ with st.expander("📐 Mathematische Formulierung"):
 $$L(\alpha) = |J_1| + |J_2| + \max\!\left(0, \left\lceil \frac{\sum_{J_3} s_i - (|J_2|\,C - \sum_{J_2} s_i)}{C} \right\rceil\right), \qquad L_2 = \max\bigl(L_1, \max_\alpha L(\alpha)\bigr).$$
 Es genügt $\alpha \in \{0\} \cup \{ s_i : s_i \le C/2 \}$.
 
-**Exaktes Optimum.** Bis 12 Pakete per Teilmengen-DP: Für eine Menge $M$ sei $f(M) = (b, \ell)$ das lexikographisch kleinste Paar aus Containerzahl und Füllung des letzten Containers; $\mathrm{OPT} = b$ von $f(\{1,\dots,n\})$. Bei 20 und 30 Paketen ein ganzzahliges Programm: Variablen $x_{ij} \in \{0,1\}$ (Paket $i$ in Container $j$), Nebenbedingungen $\sum_j x_{ij} = 1$ und $\sum_i s_i x_{ij} \le C$; $\mathrm{OPT}$ ist das kleinste $m$ mit zulässiger Lösung für $j = 1,\dots,m$, gesucht von $m = \mathrm{FFD} - 1$ abwärts bis $L_2$.
+**Exaktes Optimum.** Bis 12 Pakete per Teilmengen-DP: Für eine Menge $M$ sei $f(M) = (b, \ell)$ das lexikographisch kleinste Paar aus Containerzahl und Füllung des letzten Containers; $\mathrm{OPT} = b$ von $f(\{1,\dots,n\})$. Bei 20 und 30 Paketen ein ganzzahliges Programm: Binärvariablen $x_{ij} \in \{0,1\}$ (Paket $i$ in Container $j$), Nebenbedingungen $\sum_j x_{ij} = 1$ und $\sum_i s_i x_{ij} \le C$; $\mathrm{OPT}$ ist das kleinste $m$ mit zulässiger Lösung für $j = 1,\dots,m$, gesucht von $m = \mathrm{FFD} - 1$ abwärts bis $L_2$.
 
 **Literatur (aus Suchtreffern, Originale nicht gelesen).** Die Schranke $L_2$ geht auf Martello und Toth zurück (Knapsack Problems, Wiley 1990, Kapitel 8). Die hier benutzte Form ist aus dem Gedächtnis aufgeschrieben und wird gegen die Rechnung über alle ganzzahligen $\alpha$ und gegen das exakte Optimum getestet ($L_2 \le \mathrm{OPT}$).
         """

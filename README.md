@@ -17,12 +17,12 @@ Ganzzahlige Paketgrößen s₁ … sₙ mit 1 ≤ sᵢ ≤ C, Container der Kapa
 
 - **Kern** (`sbw_algorithm.py`): `ffd`, `l1`, `l2_detail` (Aufteilung J1, J2, J3 für das beste α), `optimum` (Teilmengen-DP über Bitmasken, bis 12 Pakete), `ausgang`, `container_pruefen` (unabhängiger Zulässigkeitsprüfer). `ffd`, `l1`, `l2` und `optimum` sind Kopien der Funktionen aus `sortieren-einsetzen-demo` (Stück 1), hier noch einmal gegen die Orakel geprüft.
 - **Handbeispiele:** vier feste Mengen zu je zwölf Paketen, Kapazität 100. Die App zeigt die FFD-Packung als gestapelte Balken, vier Kennzahlen (FFD, Optimum, L₁, L₂), die Rechnung von L₂ am besten α und ein live berechnetes Verdikt.
-- **Zufällige Instanz** (live): Größenbereich, 6 bis 12 Pakete, Kapazität 100, Startzahl.
+- **Zufällige Instanz** (live): Größenbereich, 6 bis 12 Pakete, Kapazität 100, Zufalls-Seed.
 - **Raster:** drei Größenbereiche (mittlere Teile 10 bis 50 %, große 20 bis 80 %, breite 1 bis 90 % der Kapazität) × drei Paketzahlen (12, 20, 30) × **100 feste Instanzen** je Zelle, Kapazität 1000, Größen gleichverteilt und ganzzahlig. Das Optimum kommt bei 12 Paketen aus der Teilmengen-DP, bei 20 und 30 aus einem ganzzahligen Programm (`dev/ilp.py`, `scipy.optimize.milp`, Zuordnungsmodell, **10 Sekunden Zeitlimit** je Aufruf); Instanzen, die es in dieser Zeit nicht entschieden hat, stehen als „nicht entschieden“. Die Ausgangscodes je Instanz stehen in `sbw_precomputed.json` (erzeugt von `generate_precomputed.py`, mit etwa 8 Minuten Laufzeit).
 
 ## Befunde (gemessen, keine Behauptungen)
 
-Alle Zahlen sind Messungen an den Instanzen dieser Demo (feste Seeds), nachgerechnet in `tests/test_claims.py`, `tests/test_algorithm.py` und `tests/test_oracle_schranken_beweis.py`. Die Spalte „nicht entschieden“ zählt die Instanzen, bei denen das ganzzahlige Programm in 10 Sekunden kein Optimum geliefert hat.
+Alle Zahlen sind Messungen an den Instanzen dieser Demo (feste Zufalls-Seeds), nachgerechnet in `tests/test_claims.py`, `tests/test_algorithm.py` und `tests/test_oracle_schranken_beweis.py`. Die Spalte „nicht entschieden“ zählt die Instanzen, bei denen das ganzzahlige Programm in 10 Sekunden kein Optimum geliefert hat.
 
 | Größen der Pakete | n | durch L1 bewiesen | erst durch L2 bewiesen | offen | davon FFD optimal | davon FFD nicht optimal | nicht entschieden |
 |---|---|---|---|---|---|---|---|
@@ -56,7 +56,7 @@ Im dritten Beispiel genügt die Volumenschranke 5 nicht, obwohl fünf Container 
 - Alle Aussagen gelten für gleichverteilte Paketgrößen in drei Bereichen, drei Paketzahlen (12, 20, 30) und nur FFD. Über 30 Pakete ist nichts gemessen.
 - Stärkere Schranken als L₁ und L₂ (etwa die LP-Schranke) beweisen mehr Fälle; wie viele, misst diese Demo nicht.
 - Das Optimum bei 20 und 30 Paketen kommt aus einem ganzzahligen Programm mit Zeitlimit; die Zahl der nicht entschiedenen Instanzen hängt von der Rechenzeit ab. Die Datei hält den Stand des Laufs fest.
-- 100 Instanzen je Zelle sind wenig, die Anteile bei 12 Paketen sind nicht stabil: Mit einem zweiten Satz von 100 Instanzen (Seeds 100 bis 199) sind bei mittleren Teilen und n = 12 von 13 offenen Fällen 6 (statt 8) nicht optimal, und bei großen Teilen sind von 12 offenen Fällen 10 optimal und 2 nicht optimal (statt 4 und 0 von 4). Bei großen Teilen und n = 12 überwiegen in beiden Sätzen die offenen Fälle mit optimalem FFD; die einzelnen Zahlen halten nicht.
+- 100 Instanzen je Zelle sind wenig, die Anteile bei 12 Paketen sind nicht stabil: Mit einem zweiten Satz von 100 Instanzen (Zufalls-Seeds 100 bis 199) sind bei mittleren Teilen und n = 12 von 13 offenen Fällen 6 (statt 8) nicht optimal, und bei großen Teilen sind von 12 offenen Fällen 10 optimal und 2 nicht optimal (statt 4 und 0 von 4). Bei großen Teilen und n = 12 überwiegen in beiden Sätzen die offenen Fälle mit optimalem FFD; die einzelnen Zahlen halten nicht.
 - Die Gütegarantien und die Form von L₂ stammen aus Suchtreffern und Sekundärquellen beziehungsweise aus dem Gedächtnis; die Originale wurden nicht gelesen. L₂ wird gegen die Rechnung über alle α und gegen das exakte Optimum getestet.
 
 ### Annahmen, Grenzen und bekannte Probleme (Text wie in der App)
@@ -74,7 +74,7 @@ Im dritten Beispiel genügt die Volumenschranke 5 nicht, obwohl fünf Container 
 - **Raster:** je Zelle die Aufteilung L1 / L2 / offen frisch gerechnet, bei 12 Paketen die vollständigen Codes mit der DP, bei 20 Paketen eine Stichprobe entschiedener offener Instanzen mit dem ganzzahligen Programm (`tests/test_claims.py`).
 - **Verdikte:** alle Zweige an von Hand gesetzten Werten (`tests/test_verdicts.py`), je Preset der erwartete Ausgang und die Art.
 - **Presets und Layout:** vollständig, Werte innerhalb der Reglergrenzen, Standard-Preset gleich Standardeinstellung; Schnellstart oben in der Seitenleiste, fester Kopf, genau das passende Preset hervorgehoben (`tests/test_layout.py`).
-- **Oberfläche:** AppTest-Rauchtest (jeder Button, jede Auswahl in jedem Wert, Regler und Startzahl an den Grenzen) und Footer-Test.
+- **Oberfläche:** AppTest-Rauchtest (jeder Button, jede Auswahl in jedem Wert, Regler und Zufalls-Seed an den Grenzen) und Footer-Test.
 - **Tests gesamt:** 100, Laufzeit je nach Rechner rund zwei bis drei Minuten (ohne Parallelisierung).
 
 ## Dateistruktur
