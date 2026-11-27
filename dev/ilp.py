@@ -19,7 +19,7 @@ def ilp_machbar(sizes, m: int, cap: int, zeitlimit: float):
     big = max(range(n), key=lambda i: sizes[i])
     ub[big * m + 1:big * m + m] = 0
     res = milp(np.zeros(nv), constraints=[LinearConstraint(a_eq, 1, 1), LinearConstraint(a_cap, -np.inf, cap)], integrality=np.ones(nv),
-               bounds=Bounds(np.zeros(nv), ub), options={"time_limit": zeitlimit})
+               bounds=Bounds(np.zeros(nv), ub), options={"mip_rel_gap": 0.0, "time_limit": zeitlimit})
     if res.status == 0 and res.x is not None:
         return True
     if res.status == 2:
